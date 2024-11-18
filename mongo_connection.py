@@ -5,8 +5,9 @@ import os
 load_dotenv(override=True) # haetaan ensisijaisesti .env -tiedostosta, sitten vasta ympäristömuuttujista
 
 def connect():
+    uri = f"mongodb+srv://{os.getenv("DBUSERNAME")}:{os.getenv("DBPASSWORD")}@cluster0.m52g8.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0"
     try:                        
-        client = MongoClient('connection_stringisi tähän') ### LISÄÄ CONNECTION STRINGISI,
+        client = MongoClient(uri) ### LISÄÄ CONNECTION STRINGISI,
                                                            ### HAE SALASANASI .env -TIEDOSTOSTA)
         print("connected to mongo")
         return client
