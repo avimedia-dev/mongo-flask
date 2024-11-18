@@ -11,21 +11,30 @@ app = Flask (__name__) # __name__ n paikalle menee tiedoston nimen etuosa
 client = connect()
 
 # asetetaan tietokanta (luodaan jos sen nimistä ei löydy)
-db=client["taskDB"]                 
+db=client["taskDB"]  
+print("taskDB is used")               
 # asetetaan collection (luodaan jos sen nimistä ei löydy)
-coll=db["task_collection"]          
+coll=db["task_collection"]  
+print("task_collection")        
 
 # määritellään reitti localhost:5000/ -osoitteeseen (portti 5000 oletus, jos sitä ei muuta)
 @app.route('/')
 def index():
     ### HAE TASKS-MUUTTUJAAN KAIKKI TASKIT TIETOKANNASTA (VINKKI: KONVERTOI KURSORI LISTAKSI)
-    tasks=None # 
+    data = coll.find()
+    tasks = list(data)
+    # print(data)
+    #tasks=None # 
     return render_template('index.html',all_tasks=tasks) #hakee oletuksena templates-kansiosta
 
 # Kun käyttäjä on syöttänyt tekstiä index.html -sivun tekstikentään ja painaa Add-nappia, mennään tähän reittiin
 @app.route('/add', methods=['POST']) 
 def add_task():
     task = request.form['task'] # haetaan index.html -sivun formista task-nimisen kentän teksti muuttujaan
+    new_task = {
+        "task": task,
+        "isComplete": False
+    }
     new_id = fetch_new_id(coll) ### MUOKKAA FUNKTIO TOIMIVAKSI
     ### LISÄÄ TIETOKANTAAN UUSI TIETUE, JOSSA SIJOITAT :
     ### id-kenttään new_id-muuttujan
