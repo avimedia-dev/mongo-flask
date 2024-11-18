@@ -17,7 +17,17 @@ def connect():
 def fetch_new_id(coll):
     ### FUNKTION TULEE PALAUTTAA UUSI id, JOTA KANNASSA EI VIELÄ OLE.
     ### MIKÄLI KANNASSA EI OLE YHTÄÄN DOKUMENTTIA, PALAUTETAAN 0.
-    pass #placeholder, (poista)
+    #pass #placeholder, (poista)
+    max_id = coll.find_one(sort=[('id', -1)])
+    print(max_id)
+    if max_id is not None:
+        new_id = int(max_id['id']) + 1
+        print(new_id)
+        return new_id
+    else:
+        return 0
+    
+    
 
 def fetch_task_by_id(coll,task_id):
     ### FUNKTION TULEE HAKEA task_id -MUUTTUJAN PERUSTEELLA TIETOKANNASTA TASK, JONKA id ON task_id

@@ -31,11 +31,11 @@ def index():
 @app.route('/add', methods=['POST']) 
 def add_task():
     task = request.form['task'] # haetaan index.html -sivun formista task-nimisen kentän teksti muuttujaan
-    new_task = {
-        "task": task,
-        "isComplete": False
-    }
-    new_id = fetch_new_id(coll) ### MUOKKAA FUNKTIO TOIMIVAKSI
+       
+    new_id = fetch_new_id(coll) 
+    print(new_id)
+    coll.insert_one({"id": new_id, "task": task})
+    ### MUOKKAA FUNKTIO TOIMIVAKSI
     ### LISÄÄ TIETOKANTAAN UUSI TIETUE, JOSSA SIJOITAT :
     ### id-kenttään new_id-muuttujan
     ### task-kenttään task-muuttujan
@@ -57,7 +57,8 @@ def update_task(task_id):
 
 @app.route('/delete/<int:task_id>')
 def delete_task(task_id):
-    # POISTA TASK TIETOKANNASTA task_id -TIEDON PERUSTEELLA   
+    # POISTA TASK TIETOKANNASTA task_id -TIEDON PERUSTEELLA 
+    coll.delete_one({"id":int(task_id)})  
     return redirect('/')
 
 if __name__ == '__main__':
